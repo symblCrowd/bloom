@@ -413,3 +413,50 @@ func Locations(data []byte, k uint) []uint64 {
 
 	return locs
 }
+
+
+func (f *BloomFilter) Compare(filter2 BloomFilter) float64 {
+	s1 := f.GetB().String()
+	s1 = strings.Replace(s1, "{", "", 1)
+	s1 = strings.Replace(s1, "}", "", 1)
+	s2 := filter2.GetB().String()
+	s2 = strings.Replace(s2, "{", "", 1)
+	s2 = strings.Replace(s2, "}", "", 1)
+
+	positions1 := strings.Split(s1, ",")
+	positions2 := strings.Split(s2, ",")
+
+	mapKeys1 := make(map[string]bool)
+	mapKeys2 := make(map[string]bool)
+	allKeys := make(map[string]bool)
+
+	for _, pos1 := range positions1 {
+		mapKeys1[pos1] = true
+		allKeys[pos1] = true
+	}
+	for _, pos2 := range positions2 {
+		mapKeys2[pos2] = true
+		allKeys[pos2] = true
+	}
+	log.Println(len(allKeys))
+	gleich := 0
+	gesamt := 0
+	for key, _ := range allKeys {
+		v1, _ :=  mapKeys1[key]
+		v2, _ :=  mapKeys2[key]
+		if v1 && v2 {
+			gleich++
+			gesamt++
+		} else if v1 || v2 {
+			gesamt++
+		}
+	}
+
+	log.Println(gleich)
+	log.Println(gesamt)
+	val := float64(gleich) / float64(gesamt)
+	log.Println(val)
+	return val
+
+	//return f.b.DifferenceCardinality(filter2.b)
+}

@@ -56,8 +56,8 @@ import (
 	"io"
 	"math"
 
+	"github.com/bits-and-blooms/bitset"
 	"github.com/spaolacci/murmur3"
-	"github.com/willf/bitset"
 	"log"
 	"strings"
 )
@@ -261,8 +261,8 @@ func (f *BloomFilter) Compare(filter2 BloomFilter) float64 {
 	gleich := 0
 	gesamt := 0
 	for key, _ := range allKeys {
-		v1, _ :=  mapKeys1[key]
-		v2, _ :=  mapKeys2[key]
+		v1, _ := mapKeys1[key]
+		v2, _ := mapKeys2[key]
 		if v1 && v2 {
 			gleich++
 			gesamt++
@@ -279,7 +279,6 @@ func (f *BloomFilter) Compare(filter2 BloomFilter) float64 {
 
 	//return f.b.DifferenceCardinality(filter2.b)
 }
-
 
 // ClearAll clears all the data in a Bloom filter, removing all keys
 func (f *BloomFilter) ClearAll() *BloomFilter {
@@ -413,4 +412,3 @@ func Locations(data []byte, k uint) []uint64 {
 
 	return locs
 }
-
